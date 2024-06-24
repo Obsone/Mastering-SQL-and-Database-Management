@@ -27,3 +27,6 @@ WHERE d.dept_name IN ('Marketing', 'Finance', 'Human Resources', 'Sales', 'Quali
 -- not on the lession. You use the where clause to get a glimpse of every record in the department coz
 -- the query or record output is more than 3million, you'll notice you get 1M records maybe because of the limitation of valentina studio
 
+--FRAME CLAUSE - when using a frame clause in a window function we can create a sub-range or frame
+
+-- The current salary problem
