@@ -32,3 +32,20 @@ implicit - automatically created by the database: primary and unique key
 --partial example
 CREATE INDEX index_name
 ON table_name (exppression)
+
+EXPLAIN ANALYZE
+SELECT "name", district, countrycode FROM city
+WHERE countrycode IN ('TUN','BE', 'NL')
+-- we will see on the execution time on this
+
+--partial
+CREATE INDEX idx_countrycode
+ON city (countrycode) WHERE coutnrycode IN IN ('TUN','BE', 'NL');
+--execute
+EXPLAIN ANALYZE
+SELECT "name", district, countrycode FROM city
+WHERE countrycode IN ('TUN','BE', 'NL') --'PSE'
+--notice the execution time
+
+
+-- ALGORITHMS that can be used for index (like doing Google search)
