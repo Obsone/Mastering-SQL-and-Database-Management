@@ -40,7 +40,7 @@ WHERE countrycode IN ('TUN','BE', 'NL')
 
 --partial
 CREATE INDEX idx_countrycode
-ON city (countrycode) WHERE coutnrycode IN IN ('TUN','BE', 'NL');
+ON city (countrycode) WHERE coutnrycode IN ('TUN','BE', 'NL');
 --execute
 EXPLAIN ANALYZE
 SELECT "name", district, countrycode FROM city
@@ -49,3 +49,13 @@ WHERE countrycode IN ('TUN','BE', 'NL') --'PSE'
 
 
 -- ALGORITHMS that can be used for index (like doing Google search)
+CREATE [UNIQUE] INDEX name_index
+ON table_name USING method_name (col1, ...)
+
+CREATE INDEX idx_countrycode
+ON city USING HASH (countrycode)
+
+-- B-TREE - best used for comparison operators <, >, <=, >=, =, between, in, is null, is not null
+-- HASH - can handle only equality (=) operations
+-- GIN - generalized inverted index. best used when multiple values are stored in a single field.
+-- GIST - generalized search tree. Useful in indexing geometric data and full-text search.
