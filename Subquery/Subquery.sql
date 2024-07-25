@@ -40,3 +40,17 @@ HAVING (
 
 
 -- SUBQUERIES VS JOINS
+-- both subquery and joins combine data from different tables
+-- SUBQUERIES are queries that could stand alone; can return a single result or a row set
+-- JOINS combines rows from one or more tables based on a match condition; can only return a row set(combination of table A AND B)
+
+SELECT title, price, (SELECT avg(price) FROM products) AS -- SELECT clause single result
+"golbal avergage price"
+FROM (                                                    -- FROM clause return multiple rows 
+    SELECT * FROM products WHERE price < 10
+) AS "products_sub"
+
+-- SUBQUERY result are immediately used/shown on the screen
+-- JOIN can be used in the outer query
+
+-- **Just prefer using JOIN ^_^
