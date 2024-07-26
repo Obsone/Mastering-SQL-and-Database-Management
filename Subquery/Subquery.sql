@@ -54,3 +54,62 @@ FROM (                                                    -- FROM clause return 
 -- JOIN can be used in the outer query
 
 -- **Just prefer using JOIN ^_^
+
+-- GUIDELINES
+-- a subquery must be enclosed in parentheses
+-- must be placed on the right side of the comparison operator
+-- cannot manipulate their results internally
+-- use single-row operators with single-row subqueries
+-- subqueries that return null may not return results
+
+--SINGLE ROW - returns zero or one row
+SELECT "name", salary
+FROM salaries
+WHERE salary =
+    (SELECT avg(salary) FROM salaries);
+    
+SELECT "name", salary,
+    (SELECT avg(salary) FROM salaries)
+    AS "Company average salary"
+FROM salaries;
+
+-- MULTIPLE ROW - returns one or more rows
+SELECT title, price, category
+FROM products
+WHERE category IN (
+    SELECT category FROM categories
+    WHERE categoryname IN ('Comedy', 'Family', 'Classics')
+);
+
+--MUTIPLE COLUMN - returns one or more columns
+SELECT emp_no, salary, dea.avg AS "Department average salary"
+FROM salaries AS s
+JOIN dept_emp AS de USING( emp_no)
+JOIN (
+        SELECT dept_no, AVG( salary) FROM salaries AS s2
+        JOIN dept_emp AS e USING( emp_no)
+        GROUP BY dept_no
+     ) AS dea USING(dept_no)
+WHERE salary > dea.avg;
+
+--CORRELATED - reference one or more columns in the outer statement - runs against each row
+SELECT emp_no, salary, from_date
+FROM salaries AS s
+WHERE from_date = (
+    SELECT max( s2.from_date) AS max
+    FROM salaries AS s2
+    WHERE s2.emp_no = s.emp_no
+)
+ORDER BY emp_no;
+
+--NESTED - subq in a subq
+SELECT orderlineid, prod_id, quantity
+FROM orderlines
+JOIN (
+    SELECT prod_id
+    FROM products
+    WHERE category IN (
+        SELECT category FROM categories
+        WHERE categoryname IN ('Comedy', 'Family', 'Classics')
+    )
+) AS limited USING (prod_id);
