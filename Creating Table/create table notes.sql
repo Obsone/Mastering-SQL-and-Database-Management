@@ -101,3 +101,47 @@ INSERT INTO course (
 ) VALUES (
     'name',
     'description');
+
+INSERT INTO enrollment (
+    student_id,
+    course_id,
+    enrollment_date
+) VALUES (
+    'c04a9d62-ac12-46ee-b7ac-6c52f2870319',
+    'b94ec2cd-37b6-49fb-87e6-bd2e73fc0c53',
+    NOW()::DATE
+);
+
+UPDATE course
+SET feedback = array_append (
+    feedback,
+    ROW(
+        'c04a9d62-ac12-46ee-b7ac-6c52f2870319',
+        5,
+        'great course!'
+    )::feedback
+)
+WHERE course_id = 'b94ec2cd-37b6-49fb-87e6-bd2e73fc0c53'
+------------------------------------------------------------------
+CREATE TABLE feedback (
+    student_id UUID NOT NULL REFERENCES student(student_id),
+    course_id UUID NOT NULL REFERENCES course(course_id),
+    feedback TEXT,
+    rating rating,
+    CONSTRAINT pk_feedback PRIMARY KEY (student_id, course_id)
+);
+--error: relation feedback already exists
+/*right click types feedback-design and course-design  renaming feeback_deprecated
+*/ 
+
+INSERT INTO feedback (
+    student_id,
+    course_id,
+    feedback,
+    rating
+) VALUES (
+    'c04a9d62-ac12-46ee-b7ac-6c52f2870319',
+    'b94ec2cd-37b6-49fb-87e6-bd2e73fc0c53',
+    'pretty awesome!',
+    4
+);
